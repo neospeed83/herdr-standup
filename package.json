@@ -1,0 +1,14 @@
+{
+  "name": "herdr-standup",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Evidence-backed standups from Git and Herdr activity",
+  "scripts": {
+    "standup": "node src/standup.mjs",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
