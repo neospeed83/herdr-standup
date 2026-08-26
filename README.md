@@ -2,7 +2,7 @@
 
 Herdr Standup answers **“What did I work on yesterday?”** from evidence instead of memory. It turns Git commits from one or more repositories into a concise Markdown standup and keeps the underlying commit/file evidence collapsible beneath the summary.
 
-Press `prefix+shift+s` from any Herdr workspace to open the report in a popup. With Herdr's default prefix, press `Ctrl+B`, release it, then press `Shift+S`.
+Press `prefix+u` from any Herdr workspace to open the report in a popup. With Herdr's default prefix, press `Ctrl+B`, release it, then press `U`.
 
 ## What it does
 
@@ -29,7 +29,7 @@ herdr plugin install neospeed83/herdr-standup
 herdr server reload-config
 ```
 
-Then press `prefix+shift+s` (`Ctrl+B`, release, then `Shift+S`) or run:
+Then press `prefix+u` (`Ctrl+B`, release, then `U`) or run:
 
 ```bash
 herdr plugin action invoke herdr-standup.generate

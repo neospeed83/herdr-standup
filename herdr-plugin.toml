@@ -26,7 +26,7 @@ height = "82%"
 command = ["node", "src/standup.mjs", "show"]
 
 [[keys.command]]
-key = "prefix+shift+s"
+key = "prefix+u"
 type = "plugin_action"
 command = "herdr-standup.open"
 description = "open Herdr Standup"

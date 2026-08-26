@@ -6,7 +6,7 @@ All notable changes to Herdr Standup are documented here.
 
 ### Fixed
 
-- Changed the shortcut to `prefix+shift+s`; `prefix+s` is Herdr's built-in Settings binding.
+- Changed the shortcut to `prefix+u`; `prefix+s` is Herdr's built-in Settings binding.
 
 ## [0.1.0] - 2026-08-26
 
