@@ -2,6 +2,15 @@
 
 All notable changes to Herdr Standup are documented here.
 
+## [0.2.0] - 2026-08-26
+
+### Added
+
+- Automatic, idempotent installation of the `prefix+u` keybinding.
+- A one-time backup before modifying Herdr's user configuration.
+- Conflict detection that refuses to overwrite an existing shortcut.
+- A `remove-keybinding` action for clean uninstall.
+
 ## [0.1.2] - 2026-08-26
 
 ### Fixed

@@ -11,6 +11,7 @@ Open the report from any Herdr workspace with `prefix+u`. With Herdr's default p
 - Produces `Yesterday`, `Today`, and `Blockers` sections.
 - Saves dated Markdown reports in Herdr's plugin state directory.
 - Runs locally with no network requests, telemetry, or AI API key.
+- Installs its `prefix+u` shortcut automatically without overwriting conflicts.
 
 The first release intentionally reports only verifiable committed work. Uncommitted investigation, meetings, and future priorities can be supplied as notes; richer Herdr session evidence is planned next.
 
@@ -29,21 +30,9 @@ herdr plugin install neospeed83/herdr-standup
 herdr server reload-config
 ```
 
-Add the shortcut to `~/.config/herdr/config.toml`:
+The installer adds the `prefix+u` binding to Herdr's `config.toml` and creates `config.toml.bak-herdr-standup` before its first change. If that shortcut is already assigned, installation stops instead of overwriting your configuration.
 
-```toml
-[[keys.command]]
-key = "prefix+u"
-type = "plugin_action"
-command = "herdr-standup.open"
-description = "open Herdr Standup"
-```
-
-Reload once more, then press `prefix+u` (`Ctrl+B`, release, then `U`):
-
-```bash
-herdr server reload-config
-```
+Then press `prefix+u` (`Ctrl+B`, release, then `U`).
 
 You can also invoke it without a shortcut:
 
@@ -108,14 +97,17 @@ herdr plugin install neospeed83/herdr-standup
 herdr server reload-config
 ```
 
-The keybinding is user configuration and remains in place across plugin updates.
+The keybinding installer is idempotent, so updates preserve a single binding.
 
 ## Uninstall
 
 ```bash
+herdr plugin action invoke herdr-standup.remove-keybinding
 herdr plugin uninstall herdr-standup
 herdr server reload-config
 ```
+
+The explicit removal action ensures Herdr Standup deletes only the config block it owns.
 
 ## License
 

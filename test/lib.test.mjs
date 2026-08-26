@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { cwdFromHerdrContext, dayWindow, parseGitRecords, renderStandup } from "../src/lib.mjs";
+import { installBinding, removeBinding } from "../src/config.mjs";
 
 test("dayWindow returns local yesterday boundaries", () => {
   const now = new Date(2026, 7, 26, 15, 30);
@@ -33,4 +34,27 @@ test("cwdFromHerdrContext understands Herdr CLI action context", () => {
   const raw = JSON.stringify({ workspace_cwd: "/work/atlas", focused_pane_cwd: "/work/other" });
   assert.equal(cwdFromHerdrContext(raw, "/fallback"), "/work/atlas");
   assert.equal(cwdFromHerdrContext("not-json", "/fallback"), "/fallback");
+});
+
+test("installBinding appends an idempotent Herdr shortcut", () => {
+  const original = "[ui.sound]\nenabled = false\n";
+  const first = installBinding(original);
+  assert.equal(first.changed, true);
+  assert.match(first.content, /key = "prefix\+u"/);
+  assert.match(first.content, /command = "herdr-standup\.open"/);
+  assert.equal(installBinding(first.content).changed, false);
+});
+
+test("installBinding refuses to overwrite a conflicting shortcut", () => {
+  assert.throws(
+    () => installBinding('[[keys.command]]\nkey = "prefix+u"\ntype = "shell"\ncommand = "other"\n'),
+    /already assigned/
+  );
+});
+
+test("removeBinding removes only the Standup-owned block", () => {
+  const installed = installBinding("[ui.sound]\nenabled = false\n").content;
+  const removed = removeBinding(installed);
+  assert.equal(removed.changed, true);
+  assert.equal(removed.content, "[ui.sound]\nenabled = false\n");
 });
