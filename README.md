@@ -2,7 +2,7 @@
 
 Herdr Standup answers **“What did I work on yesterday?”** from evidence instead of memory. It turns Git commits from one or more repositories into a concise Markdown standup and keeps the underlying commit/file evidence collapsible beneath the summary.
 
-Press `prefix+u` from any Herdr workspace to open the report in a popup. With Herdr's default prefix, press `Ctrl+B`, release it, then press `U`.
+Open the report from any Herdr workspace with `prefix+u`. With Herdr's default prefix, press `Ctrl+B`, release it, then press `U`.
 
 ## What it does
 
@@ -29,7 +29,23 @@ herdr plugin install neospeed83/herdr-standup
 herdr server reload-config
 ```
 
-Then press `prefix+u` (`Ctrl+B`, release, then `U`) or run:
+Add the shortcut to `~/.config/herdr/config.toml`:
+
+```toml
+[[keys.command]]
+key = "prefix+u"
+type = "plugin_action"
+command = "herdr-standup.open"
+description = "open Herdr Standup"
+```
+
+Reload once more, then press `prefix+u` (`Ctrl+B`, release, then `U`):
+
+```bash
+herdr server reload-config
+```
+
+You can also invoke it without a shortcut:
 
 ```bash
 herdr plugin action invoke herdr-standup.generate
@@ -91,6 +107,8 @@ Herdr Standup reads local Git metadata and writes a local Markdown file. It does
 herdr plugin install neospeed83/herdr-standup
 herdr server reload-config
 ```
+
+The keybinding is user configuration and remains in place across plugin updates.
 
 ## Uninstall
 

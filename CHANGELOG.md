@@ -2,6 +2,12 @@
 
 All notable changes to Herdr Standup are documented here.
 
+## [0.1.2] - 2026-08-26
+
+### Fixed
+
+- Documented the required `config.toml` keybinding for Herdr 0.8.2 instead of claiming that plugin manifest key declarations become active automatically.
+
 ## [0.1.1] - 2026-08-26
 
 ### Fixed

@@ -1,6 +1,6 @@
 id = "herdr-standup"
 name = "Herdr Standup"
-version = "0.1.1"
+version = "0.1.2"
 min_herdr_version = "0.8.0"
 description = "Answer what you worked on yesterday from Git evidence and Herdr context"
 platforms = ["linux", "macos", "windows"]
@@ -24,9 +24,3 @@ placement = "popup"
 width = "82%"
 height = "82%"
 command = ["node", "src/standup.mjs", "show"]
-
-[[keys.command]]
-key = "prefix+u"
-type = "plugin_action"
-command = "herdr-standup.open"
-description = "open Herdr Standup"
