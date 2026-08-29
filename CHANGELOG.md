@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.1] - 2026-08-28
+
+- Rewrite the plugin as a native Rust binary.
+- Publish prebuilt binaries for macOS, Linux, and Windows.
+- Remove the Node.js runtime requirement.
+
 All notable changes to Herdr Standup are documented here.
 
 ## [0.2.0] - 2026-08-26

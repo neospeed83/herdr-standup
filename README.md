@@ -22,7 +22,6 @@ Herdr Standup is a native Rust plugin. Installation downloads the matching prebu
 ## Requirements
 
 - Herdr 0.8.0 or newer
-- Node.js 20 or newer
 - Git
 
 ## Install
@@ -81,11 +80,11 @@ Create `config.json` there:
 
 The active workspace repository is always included automatically. Duplicate paths are ignored.
 
-## Run without Herdr
+## Build and test
 
 ```bash
-npm run standup
-npm test
+cargo run -- generate
+cargo test
 ```
 
 Without Herdr, reports are saved under `.standup/` in the current repository.
