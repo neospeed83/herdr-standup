@@ -54,6 +54,9 @@ fn context_cwd() -> PathBuf {
         .ok()
         .and_then(|s| serde_json::from_str::<Value>(&s).ok())
         .and_then(|v| {
+            if let Some(path) = v.pointer("/worktree/path").and_then(Value::as_str) {
+                return Some(PathBuf::from(path));
+            }
             ["worktree_path", "workspace_cwd", "focused_pane_cwd"]
                 .into_iter()
                 .find_map(|k| v.get(k).and_then(Value::as_str).map(PathBuf::from))
@@ -201,6 +204,10 @@ fn binding(remove: bool) -> io::Result<()> {
     if next != old {
         if let Some(d) = p.parent() {
             fs::create_dir_all(d)?
+        }
+        let backup = p.with_file_name("config.toml.bak-herdr-standup");
+        if p.exists() && !backup.exists() {
+            fs::copy(&p, backup)?;
         }
         fs::write(&p, next)?
     }

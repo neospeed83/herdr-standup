@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.3.2] - 2026-08-28
+
+- Preserve config backups and nested Herdr worktree context in the native implementation.
+
 ## [0.3.1] - 2026-08-28
 
 - Rewrite the plugin as a native Rust binary.
