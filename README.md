@@ -15,6 +15,10 @@ Open the report from any Herdr workspace with `prefix+u`. With Herdr's default p
 
 The first release intentionally reports only verifiable committed work. Uncommitted investigation, meetings, and future priorities can be supplied as notes; richer Herdr session evidence is planned next.
 
+## Runtime
+
+Herdr Standup is a native Rust plugin. Installation downloads the matching prebuilt binary; Node.js and Rust are not required.
+
 ## Requirements
 
 - Herdr 0.8.0 or newer

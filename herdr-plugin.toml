@@ -1,29 +1,37 @@
 id = "herdr-standup"
 name = "Herdr Standup"
-version = "0.2.0"
+version = "0.3.0"
 min_herdr_version = "0.8.0"
 description = "Answer what you worked on yesterday from Git evidence and Herdr context"
 platforms = ["linux", "macos", "windows"]
 
 [[build]]
-command = ["node", "src/install.mjs", "install"]
+command = ["sh", "scripts/install-binary.sh"]
+platforms = ["linux", "macos"]
+
+[[build]]
+command = ["powershell", "-ExecutionPolicy", "Bypass", "-File", "scripts/install-binary.ps1"]
+platforms = ["windows"]
+
+[[build]]
+command = ["bin/herdr-standup", "install"]
 
 [[actions]]
 id = "generate"
 title = "Generate yesterday's standup"
 contexts = ["workspace"]
-command = ["node", "src/standup.mjs", "generate"]
+command = ["bin/herdr-standup", "generate"]
 
 [[actions]]
 id = "open"
 title = "Open Herdr Standup"
 contexts = ["workspace"]
-command = ["node", "src/open.mjs"]
+command = ["bin/herdr-standup", "open"]
 
 [[actions]]
 id = "remove-keybinding"
 title = "Remove Standup keybinding"
-command = ["node", "src/install.mjs", "remove"]
+command = ["bin/herdr-standup", "remove-keybinding"]
 
 [[panes]]
 id = "standup"
@@ -31,4 +39,4 @@ title = "Herdr Standup"
 placement = "popup"
 width = "82%"
 height = "82%"
-command = ["node", "src/standup.mjs", "show"]
+command = ["bin/herdr-standup", "show"]

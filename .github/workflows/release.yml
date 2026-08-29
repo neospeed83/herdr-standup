@@ -1,0 +1,36 @@
+name: Native release
+on:
+  push:
+    tags: ["v*"]
+permissions:
+  contents: write
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: macos-14
+            target: aarch64-apple-darwin
+            asset: herdr-standup-macos-aarch64
+          - os: macos-13
+            target: x86_64-apple-darwin
+            asset: herdr-standup-macos-x86_64
+          - os: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+            asset: herdr-standup-linux-x86_64
+          - os: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+            asset: herdr-standup-linux-aarch64
+          - os: windows-2025
+            target: x86_64-pc-windows-msvc
+            asset: herdr-standup-windows-x86_64.exe
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with: { targets: "${{ matrix.target }}" }
+      - run: cargo build --release --locked --target ${{ matrix.target }}
+      - shell: bash
+        run: cp "target/${{ matrix.target }}/release/herdr-standup${{ runner.os == 'Windows' && '.exe' || '' }}" "${{ matrix.asset }}"
+      - uses: softprops/action-gh-release@v2
+        with: { files: "${{ matrix.asset }}" }

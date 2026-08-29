@@ -1,2 +1,4 @@
 .standup/
 node_modules/
+target/
+bin/
