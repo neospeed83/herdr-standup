@@ -277,7 +277,13 @@ fn main() -> ExitCode {
                 "--focus",
             ])
             .status()
-            .map(|_| ()),
+            .and_then(|status| {
+                if status.success() {
+                    Ok(())
+                } else {
+                    Err(io::Error::other("unable to open Standup popup"))
+                }
+            }),
         "show" => generate(true),
         _ => generate(false),
     };

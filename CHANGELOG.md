@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.3.3] - 2026-08-28
+
+- Resolve the native popup executable relative to the plugin root and propagate launch failures.
+
 ## [0.3.2] - 2026-08-28
 
 - Preserve config backups and nested Herdr worktree context in the native implementation.
