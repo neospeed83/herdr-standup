@@ -1,19 +1,19 @@
 # Herdr Standup
 
-Herdr Standup answers **“What did I work on yesterday?”** from evidence instead of memory. It turns Git commits from one or more repositories into a concise Markdown standup and keeps the underlying commit/file evidence collapsible beneath the summary.
+Herdr Standup turns your Git commits and a couple of optional notes into a focused three-question standup.
 
 Open the report from any Herdr workspace with `prefix+u`. With Herdr's default prefix, press `Ctrl+B`, release it, then press `U`.
 
 ## What it does
 
 - Uses your local timezone to select yesterday.
-- Reads commits from every branch and worktree in configured repositories.
-- Produces `Yesterday`, `Today`, and `Blockers` sections.
+- Reads your commits (matching each repository's `user.email`) from every branch and worktree in configured repositories.
+- Shows only: what you did yesterday, what you will do today, and any blockers.
 - Saves dated Markdown reports in Herdr's plugin state directory.
 - Runs locally with no network requests, telemetry, or AI API key.
 - Installs its `prefix+u` shortcut automatically without overwriting conflicts.
 
-The first release intentionally reports only verifiable committed work. Uncommitted investigation, meetings, and future priorities can be supplied as notes; richer Herdr session evidence is planned next.
+Yesterday is based on committed work. Today and blockers come from your optional notes.
 
 ## Runtime
 
@@ -23,6 +23,9 @@ Herdr Standup is a native Rust plugin. Installation downloads the matching prebu
 
 - Herdr 0.8.0 or newer
 - Git
+- macOS/Linux installation: `curl`, `awk`, and either `sha256sum` or `shasum`
+
+Prebuilt Linux binaries target GNU libc.
 
 ## Install
 
@@ -46,6 +49,9 @@ herdr plugin action invoke herdr-standup.generate
 ## Local development
 
 ```bash
+cargo build --release
+mkdir -p bin
+cp target/release/herdr-standup bin/herdr-standup
 herdr plugin link "$PWD"
 herdr plugin action list --plugin herdr-standup
 herdr plugin action invoke herdr-standup.generate
@@ -91,7 +97,9 @@ Without Herdr, reports are saved under `.standup/` in the current repository.
 
 ## Privacy
 
-Herdr Standup reads local Git metadata and writes a local Markdown file. It does not send repository data anywhere.
+Herdr Standup reads local Git metadata and writes a local Markdown file. On Unix it creates report and replacement files with mode `0600`; Windows uses the current account's inherited ACL. It does not send repository data anywhere. Reports contain repository names and commit subjects, but omit hashes, timestamps, filenames, and absolute paths. Reports and plugin configuration are retained after uninstall unless you delete them explicitly.
+
+The three-track plugin review and its remaining platform verification items are documented in [REVIEW.md](REVIEW.md).
 
 ## Updating
 

@@ -1,12 +1,37 @@
 name: Native release
+
 on:
   push:
     tags: ["v*"]
+
 permissions:
-  contents: write
+  contents: read
+
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with: { components: "clippy,rustfmt" }
+      - run: cargo fmt -- --check
+      - run: cargo clippy --all-targets --all-features --locked -- -D warnings
+      - run: cargo test --locked
+      - name: Verify tag and embedded versions agree
+        shell: bash
+        run: |
+          version=${GITHUB_REF_NAME#v}
+          manifest=$(sed -n 's/^version = "\([^"]*\)"/\1/p' herdr-plugin.toml | head -1)
+          package=$(sed -n 's/^version = "\([^"]*\)"/\1/p' Cargo.toml | head -1)
+          shell=$(sed -n 's/^version=//p' scripts/install-binary.sh)
+          powershell=$(sed -n 's/^\$Version = "\([^"]*\)"/\1/p' scripts/install-binary.ps1)
+          test "$version" = "$manifest" && test "$version" = "$package"
+          test "$version" = "$shell" && test "$version" = "$powershell"
+
   build:
+    needs: validate
     strategy:
+      fail-fast: true
       matrix:
         include:
           - os: macos-14
@@ -31,6 +56,31 @@ jobs:
         with: { targets: "${{ matrix.target }}" }
       - run: cargo build --release --locked --target ${{ matrix.target }}
       - shell: bash
-        run: cp "target/${{ matrix.target }}/release/herdr-standup${{ runner.os == 'Windows' && '.exe' || '' }}" "${{ matrix.asset }}"
+        run: |
+          cp "target/${{ matrix.target }}/release/herdr-standup${{ runner.os == 'Windows' && '.exe' || '' }}" "${{ matrix.asset }}"
+          if command -v sha256sum >/dev/null 2>&1; then
+            sha256sum "${{ matrix.asset }}" > "${{ matrix.asset }}.sha256"
+          else
+            shasum -a 256 "${{ matrix.asset }}" > "${{ matrix.asset }}.sha256"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset }}
+          path: |
+            ${{ matrix.asset }}
+            ${{ matrix.asset }}.sha256
+          if-no-files-found: error
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: release
+          merge-multiple: true
       - uses: softprops/action-gh-release@v2
-        with: { files: "${{ matrix.asset }}" }
+        with:
+          files: release/*

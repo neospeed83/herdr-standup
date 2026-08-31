@@ -1,0 +1,4 @@
+{
+  "repositories": ["/path/that/does/not/exist"],
+  "today": ["This incomplete report must not replace an existing report"]
+}

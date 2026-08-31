@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.0] - 2026-08-30
+
+- Focus the report UI on exactly three questions: yesterday, today, and blockers.
+- Include only commits matching each repository's configured Git email.
+- Surface collection and configuration failures without replacing a valid prior report.
+- Harden Markdown rendering, keybinding edits, and staged file replacement.
+- Pin and verify release downloads and restore cross-platform Rust CI.
+
 ## [0.3.3] - 2026-08-28
 
 - Resolve the native popup executable relative to the plugin root and propagate launch failures.

@@ -9,10 +9,22 @@ permissions:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm test
+      - uses: dtolnay/rust-toolchain@stable
+        with: { components: "clippy,rustfmt" }
+      - run: cargo fmt -- --check
+      - run: cargo clippy --all-targets --all-features --locked -- -D warnings
+      - run: cargo test --locked
+      - name: Verify release versions agree
+        shell: bash
+        run: |
+          manifest=$(sed -n 's/^version = "\([^"]*\)"/\1/p' herdr-plugin.toml | head -1)
+          package=$(sed -n 's/^version = "\([^"]*\)"/\1/p' Cargo.toml | head -1)
+          shell=$(sed -n 's/^version=//p' scripts/install-binary.sh)
+          powershell=$(sed -n 's/^\$Version = "\([^"]*\)"/\1/p' scripts/install-binary.ps1)
+          test "$manifest" = "$package" && test "$manifest" = "$shell" && test "$manifest" = "$powershell"

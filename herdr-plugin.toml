@@ -1,6 +1,6 @@
 id = "herdr-standup"
 name = "Herdr Standup"
-version = "0.3.3"
+version = "0.4.0"
 min_herdr_version = "0.8.0"
 description = "Answer what you worked on yesterday from Git evidence and Herdr context"
 platforms = ["linux", "macos", "windows"]
